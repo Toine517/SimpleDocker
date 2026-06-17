@@ -53,6 +53,10 @@ wrapper = """<html>
 </head>
 <body>
 <style>
+div {
+  width: 95%; 
+  border: 0px solid #000000;
+}
 div.b {
   word-wrap: break-word;
 }
