@@ -1,4 +1,3 @@
-
 from flask import Flask # import the Flask class from the flask module
 from flask import request # import the request class from the flask module for handling and making HTTP requests
 from flask import jsonify # import the jsonify class from the flask module for converting a Python dictionary or list into JSON format
@@ -48,99 +47,13 @@ def generate_pi_digits(num_digits):
     return pi_string
 
 
-products = [
-    {'id': 143, 'name': 'Notebook', 'price': 5.49},
-    {'id': 144, 'name': 'Black Marker', 'price': 1.99}
-]
+@app.route('/', methods=['GET'], strict_slashes=False) # strict_slashes=False allows for both '/products' and '/products/' to return the same thing and methods=['GET'] specifies that this endpoint will only accept GET requests
+def get_pi():
+    return generate_pi_digits(33)
 
-# REST API endpoints: (The REST API endpoints are the URLs that your application will expose to the outside world. These URLs will be used to perform CRUD operations on your data.)
-# Create a product: POST /products
-# Retrieve all products: GET /products
-# Retrieve a specific product: GET /products/<id>
-# Update a specific product: PUT /products/<id>
-# Delete a product: DELETE /products/<id>
-
-# Retrieve all products: GET /products. This endpoint should return a JSON representation of all the products in the products list. Example request - http://localhost:5000/products
-@app.route('/products', methods=['GET'], strict_slashes=False) # strict_slashes=False allows for both '/products' and '/products/' to return the same thing and methods=['GET'] specifies that this endpoint will only accept GET requests
-def get_products():
-    """returns all products"""
-    return jsonify(products)
-
-
-# Retrieve a specific product: GET /products/<id>. This endpoint should return a JSON representation of the product with the given id. Example request - http://localhost:5000/products/143
-@app.route('/products/<int:id>', methods=['GET'], strict_slashes=False) # strict_slashes=False allows for both '/products/<int:id>' and '/products/<int:id>/' to return the same thing and methods=['GET'] specifies that this endpoint will only accept GET requests
-def get_product(id):
-    """returns a specific product"""
-    for product in products:
-        if product['id'] == id:     # if the product id matches the id passed in, return the product as JSON
-            return jsonify(product) # return the product as JSON
-    return jsonify({'error': 'Product not found'}), 404 # return an error if the product is not found
-
-# Create a product: POST /products. This endpoint should create a new product in the products list. The request body should contain the name and price of the product. Example request - http://localhost:5000/products
-@app.route('/products', methods=['POST'], strict_slashes=False) # strict_slashes=False allows for both '/products' and '/products/' to return the same thing and methods=['POST'] specifies that this endpoint will only accept POST requests
-def create_product():
-    """creates a new product"""
-    product = request.get_json() # get the request body as JSON
-    if not product:
-        return jsonify({'error': 'Product not found'}), 400 # return an error if the request body is not JSON
-    if 'name' not in product:
-        return jsonify({'error': 'Missing name'}), 400 # return an error if the request body does not contain a name
-    if 'price' not in product:
-        return jsonify({'error': 'Missing price'}), 400 # return an error if the request body does not contain a price
-    if 'id' not in product:
-        product['id'] = len(products) + 1 # add an id to the new product if it is not already in the request body
-    products.append(product) # add the new product to the products list
-    return jsonify(product), 201 # return the new product as JSON with a 201 status code (201 = created)
-    
-
-# Update a specific product: PUT /products/<id>. This endpoint should update the product with the given id in the products list. The request body should contain the name and price of the product. Example request - http://localhost:5000/products/143
-@app.route('/products/<int:id>', methods=['PUT'], strict_slashes=False) # strict_slashes=False allows for both '/products/<int:id>' and '/products/<int:id>/' to return the same thing and methods=['PUT'] specifies that this endpoint will only accept PUT requests
-def update_product(id):
-    id = int(id) # convert the id to an integer
-    updated_product = request.get_json() # get the request body as JSON
-    for product in products:
-        if product['id'] == id:
-            for key, value in updated_product.items():
-                product[key] = value
-            return jsonify(product), 200 # return the updated product as JSON with a 200 status code (200 = OK)
-    return jsonify({'error': 'Product not found'}), 404 # return an error if the product is not found
-
-# Delete a product: DELETE /products/<id>. This endpoint should delete the product with the given id from the products list. Example request - http://localhost:5000/products/143
-@app.route('/products/<int:id>', methods=['DELETE'], strict_slashes=False) # strict_slashes=False allows for both '/products/<int:id>' and '/products/<int:id>/' to return the same thing and methods=['DELETE'] specifies that this endpoint will only accept DELETE requests
-def delete_product(id):
-    id = int(id) # convert the id to an integer
-    for product in products:
-        if product['id'] == id:
-            products.remove(product)
-            return jsonify({'message': 'Product deleted'}), 200 # return a message that the product was deleted with a 200 status code (200 = OK)
-    return jsonify({'error': 'Product not found'}), 404 # return an error if the product is not found
+@app.route('/<int:id>',methods=['GET'], strict_slashes=False)
+def get_pi_decimal(id):
+    return generate_pi_digits(int(id))
 
 if __name__ == '__main__': # if the script is executed directly, the code block is executed, if the script is imported, the code block is not executed.
     app.run(host='0.0.0.0', port='5070', debug = True) #specify the url and port, and debug = True allows for the server to automatically reload when changes are made to the code
-    
-# on terminal enter = 'export FLASK_APP=0-hello_route.py' to set the file to be run as the flask app
-# on terminal enter = 'flask run' to run the flask app
-# or enter = 'python3 <filename>' to run the file directly
-# The method should be restarted manually for any change in the code. To overcome this, the debug support is enabled so as to track any error.
-
-
-# To test the endpoints, you can use Postman, a popular tool for testing REST APIs. You can also use curl, a command line tool for making HTTP requests.
-
-# To test the GET /products endpoint, you can use the following curl command: curl http://localhost:5070/products
-# To test the GET /products/<id> endpoint, you can use the following curl command: curl http://localhost:5070/products/143
-# To test the POST /products endpoint, you can use the following curl command: 
-    # curl -X POST -H "Content-Type: application/json" -d '{"name": "Pencil", "price": 1.99}' http://localhost:5070/products (x = specify the request method, H = specify the request header, d = specify the request body)
-# To test the PUT /products/<id> endpoint, you can use the following curl command:
-    # curl -X PUT -H "Content-Type: application/json" -d '{"name": "Pencil", "price": 1.99}' http://localhost:5070/products/143 (x = specify the request method, H = specify the request header, d = specify the request body)
-# To test the DELETE /products/<id> endpoint, you can use the following curl command: curl -X DELETE http://localhost:5070/products/143 (x = specify the request method)
-
-
-"""
-
-While the GET endpoints are easy to test with curl using a command line interface, the POST, PUT and DELETE commands can be cumbersome. 
-To circumvent this problem, you can use Postman, which is a software that is available as a service.
-
-Postman is a software that allows you to test your APIs. It is available as a service, and also as a desktop application. 
-You can download the desktop application from https://www.getpostman.com/downloads/.
-
-"""
