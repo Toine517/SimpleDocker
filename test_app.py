@@ -56,4 +56,4 @@ def get_pi_decimal(id):
     return generate_pi_digits(int(id))
 
 if __name__ == '__main__': # if the script is executed directly, the code block is executed, if the script is imported, the code block is not executed.
-    app.run(host='0.0.0.0', port='5070', debug = True) #specify the url and port, and debug = True allows for the server to automatically reload when changes are made to the code
+    app.run(host='0.0.0.0', port='8080', debug = True) #specify the url and port, and debug = True allows for the server to automatically reload when changes are made to the code
