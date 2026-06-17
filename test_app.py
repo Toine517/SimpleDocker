@@ -45,6 +45,14 @@ def generate_pi_digits(num_digits):
             r = nr
             
     return pi_string
+    
+wrapper = """<html>
+<head>
+<title>%s output - %s</title>
+</head>
+<body><p>%s</p></body>
+</html>"""
+
 
 
 @app.route('/', methods=['GET'], strict_slashes=False) # strict_slashes=False allows for both '/products' and '/products/' to return the same thing and methods=['GET'] specifies that this endpoint will only accept GET requests
@@ -53,7 +61,7 @@ def get_pi():
 
 @app.route('/<int:id>',methods=['GET'], strict_slashes=False)
 def get_pi_decimal(id):
-    return generate_pi_digits(int(id))
+    return wrapper % ("Compute-Pi", now, generate_pi_digits(int(id)))
 
 if __name__ == '__main__': # if the script is executed directly, the code block is executed, if the script is imported, the code block is not executed.
     app.run(host='0.0.0.0', port='8080', debug = True) #specify the url and port, and debug = True allows for the server to automatically reload when changes are made to the code
