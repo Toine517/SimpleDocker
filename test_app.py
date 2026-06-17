@@ -62,7 +62,7 @@ def get_pi():
 
 @app.route('/<int:id>',methods=['GET'], strict_slashes=False)
 def get_pi_decimal(id):
-    return wrapper % ("Compute-Pi", now, generate_pi_digits(int(id)))
+    return wrapper % ("Compute-Pi", "10-10-2026", generate_pi_digits(int(id)))
 
 if __name__ == '__main__': # if the script is executed directly, the code block is executed, if the script is imported, the code block is not executed.
     app.run(host='0.0.0.0', port='8080', debug = True) #specify the url and port, and debug = True allows for the server to automatically reload when changes are made to the code
