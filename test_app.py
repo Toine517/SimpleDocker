@@ -14,6 +14,39 @@ app = Flask(__name__) # creates an instance of the Flask class called "app", thi
 
 CORS(app) # use the CORS class to pass in the app variable, this allows cross origin resource sharing which allows for use of your api by other domains
 
+def generate_pi_digits(num_digits):
+    """
+    Generates pi digits using a pure integer spigot algorithm.
+    """
+    q, r, t, k, n, l = 1, 0, 1, 1, 3, 3
+    digits_found = 0
+    pi_string = ""
+    
+    while digits_found < num_digits:
+        if 4 * q + r - t < n * t:
+            pi_string += str(n)
+            digits_found += 1
+            if digits_found == 1:
+                pi_string += "."
+            
+            # Update values for the next extraction
+            nr = 10 * (r - n * t)
+            n = ((10 * (3 * q + r)) // t) - 10 * n
+            q *= 10
+            r = nr
+        else:
+            # Main algorithm step to generate fractions
+            nr = (2 * q + r) * l
+            nn = (q * (7 * k + 2) + r * l) // (t * l)
+            q *= k
+            t *= l
+            l += 2
+            k += 1
+            n = nn
+            r = nr
+            
+    return pi_string
+
 
 products = [
     {'id': 143, 'name': 'Notebook', 'price': 5.49},
