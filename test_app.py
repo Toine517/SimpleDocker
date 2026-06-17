@@ -54,7 +54,7 @@ wrapper = """<html>
 <body>
 <style>
 div {
-  width: 95%%;
+  width: 100%%;
   border: 0px solid #000000;
 }
 div.b {
