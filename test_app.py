@@ -54,11 +54,11 @@ wrapper = """<html>
 <body>
 <style>
 div {
-  width: 95%; 
-  border: 0px solid #000000;
+  width: 95%\; 
+  border: 0px solid #000000\;
 }
 div.b {
-  word-wrap: break-word;
+  word-wrap: break-word\;
 }
 </style>
 <div class="b">%s</dib>
