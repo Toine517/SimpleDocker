@@ -51,7 +51,14 @@ wrapper = """<html>
 <head>
 <title>%s output - %s</title>
 </head>
-<body><p>%s</p></body>
+<body>
+<style>
+div.b {
+  word-wrap: break-word;
+}
+</style>
+<div class="b">%s</dib>
+</body>
 </html>"""
 
 
