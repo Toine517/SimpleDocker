@@ -3,4 +3,4 @@ WORKDIR /app
 COPY . /app
 RUN pip3 install -r requirements.txt
 EXPOSE 8080
-CMD ["python", "product_list_app.py"]
+CMD ["python", "test_app.py"]
